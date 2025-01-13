@@ -26,7 +26,7 @@ const List = () => {
   return (
     <>
       {tables &&
-        tables.map((table) => (
+        tables?.map((table) => (
           <Row key={table.id} className={styles.listItem}>
             <Col xs={2}>
               <h3>Table {table.id}</h3>

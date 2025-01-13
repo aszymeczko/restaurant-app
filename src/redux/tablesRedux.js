@@ -1,8 +1,10 @@
 // selectors
+import { API_URL } from "../config";
+
 export const fetchTables = () => {
   return (dispatch) => {
     dispatch(fetchTablesRequest());
-    fetch("http://localhost:3131/tables")
+    fetch(`${API_URL}/tables`)
       .then((response) => response.json())
       .then((tables) => {
         dispatch(fetchTablesSuccess(tables));
@@ -22,10 +24,10 @@ export const updateTable = (payload) => {
       },
       body: JSON.stringify(payload),
     };
-    return fetch(`http://localhost:3131/tables/${payload.id}`, options)
-      .then((response) => response.json)
+    return fetch(`${API_URL}/tables/${payload.id}`, options)
+      .then((response) => response.json())
       .then((updated) => {
-        dispatch(patchTablesRequest(payload));
+        dispatch(patchTablesRequest(updated));
       })
       .catch((error) => {
         dispatch(fetchTablesFailure(error.message));
@@ -35,7 +37,6 @@ export const updateTable = (payload) => {
 
 export const addTable = (payload) => {
   return (dispatch) => {
-    // dispatch(patchTablesRequest());
     const options = {
       method: "POST",
       headers: {
@@ -43,10 +44,9 @@ export const addTable = (payload) => {
       },
       body: JSON.stringify(payload),
     };
-    return fetch(`http://localhost:3131/tables`, options)
+    return fetch(`${API_URL}/tables`, options)
       .then((response) => response.json())
       .then((added) => {
-        console.log("added", added);
         dispatch(addTableRequest(added));
       })
       .catch((error) => {
@@ -64,7 +64,7 @@ export const removeTable = (tableId) => {
         "Content-Type": "application/json",
       },
     };
-    fetch(`http://localhost:3131/tables/${tableId}`, options)
+    fetch(`${API_URL}/tables/${tableId}`, options)
       .then((response) => response.json)
       .then((added) => {
         dispatch(removeTableRequest(tableId));
@@ -81,7 +81,7 @@ const FETCH_TABLES_REQUEST = createActionName("FETCH_TABLES_REQUEST");
 const FETCH_TABLES_SUCCESS = createActionName("FETCH_TABLES_SUCCESS");
 const FETCH_TABLES_FAILURE = createActionName("FETCH_TABLES_FAILURE");
 
-const PATCH_TABLES_REQUEST = createActionName("FETCH_TABLES_REQUEST");
+const PATCH_TABLES_REQUEST = createActionName("PATCH_TABLES_REQUEST");
 
 const ADD_TABLE_REQUEST = createActionName("ADD_TABLE_REQUEST");
 
@@ -146,10 +146,12 @@ const tablesReducer = (partState = initialState, action) => {
     case PATCH_TABLES_REQUEST:
       return {
         loading: false,
-        tables: partState.tables.map((table) =>
-          table.id === action.payload.id ? action.payload : table,
-        ),
-        error: action.payload,
+        tables: [
+          ...partState.tables.map((table) =>
+            table.id === action.payload.id ? action.payload : table,
+          ),
+        ],
+        error: null,
       };
     case ADD_TABLE_REQUEST:
       return {

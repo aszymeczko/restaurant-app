@@ -8,22 +8,10 @@ import styles from "./Item.module.scss";
 import { updateTable } from "../../../redux/tablesRedux";
 import Loader from "../../common/Loader/Loader";
 
-const Item = () => {
+const Item = ({ currentTable, setCurrentTable, loading }) => {
   const availableStatuses = ["Free", "Reserved", "Busy", "Cleaning"];
-  const { tableId } = useParams();
-  const [currentTable, setCurrentTable] = useState({});
-  const { loading, tables, error } = useSelector((state) => state.tables);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (tables?.length) {
-      setCurrentTable(() => tables.find((table) => table.id === tableId));
-    }
-  }, [tableId, loading, tables]);
-
-  if (loading) return <Loader />;
-  if (error) return "Error...";
 
   const handleChange = (value, field) => {
     setCurrentTable({
@@ -34,7 +22,7 @@ const Item = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateTable(currentTable)).then(() => navigate("/"));
+    dispatch(updateTable(currentTable)).then(() => navigate(`/`));
   };
 
   return (
