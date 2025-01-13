@@ -1,20 +1,17 @@
-import { ButtonGroup, Col, Row, Spinner } from "react-bootstrap";
+import { ButtonGroup, Col, Row } from "react-bootstrap";
 import Button from "../../common/Button/Button";
 import styles from "./List.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { removeTable } from "../../../redux/tablesRedux";
+import Loader from "../../common/Loader/Loader";
 
 const List = () => {
   const { loading, tables, error } = useSelector((state) => state.tables);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  if (loading)
-    return (
-      <Spinner animation="border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </Spinner>
-    );
+
+  if (loading) return <Loader />;
 
   if (error) return "error...";
 

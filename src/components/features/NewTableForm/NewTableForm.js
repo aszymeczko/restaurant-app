@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Form from "react-bootstrap/Form";
 import { Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
@@ -15,7 +15,7 @@ const NewTableForm = () => {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const avalibleStatuses = ["Free", "Reserved", "Busy", "Cleaning"];
+  const availableStatuses = ["Free", "Reserved", "Busy", "Cleaning"];
 
   const handleChange = (value, field) => {
     setTable({
@@ -41,7 +41,7 @@ const NewTableForm = () => {
               value={table.status}
               onChange={(e) => handleChange(e.target.value, "status")}
             >
-              {avalibleStatuses.map((status) => (
+              {availableStatuses.map((status) => (
                 <option key={status} value={status}>
                   {status}
                 </option>

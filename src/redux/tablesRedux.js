@@ -22,7 +22,7 @@ export const updateTable = (payload) => {
       },
       body: JSON.stringify(payload),
     };
-    fetch(`http://localhost:3131/tables/${payload.id}`, options)
+    return fetch(`http://localhost:3131/tables/${payload.id}`, options)
       .then((response) => response.json)
       .then((updated) => {
         dispatch(patchTablesRequest(payload));
